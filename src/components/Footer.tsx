@@ -15,7 +15,7 @@ export function Footer() {
           {[
             { label: 'GitHub',   href: 'https://github.com/WesleyDevFranco' },
             { label: 'LinkedIn', href: 'https://www.linkedin.com/in/wesley-franco-dev/' },
-            { label: 'E-mail',   href: 'mailto:wesleycaiobusiness@gmail.com' },
+            { label: 'E-mail',   href: 'mailto:francowesley4@gmail.com' },
           ].map((l) => (
             <a
               key={l.label}
