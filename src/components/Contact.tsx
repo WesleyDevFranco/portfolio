@@ -35,10 +35,10 @@ export function Contact() {
         <Reveal>
           <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-4">Contato</span>
           <h2 className="font-serif text-[clamp(38px,5.5vw,72px)] text-t1 leading-[1.05] tracking-[0.01em] mb-5">
-            Vamos construir<br />algo juntos?
+            Tem um projeto<br />em mente?
           </h2>
           <p className="text-[16.5px] text-t3 leading-[1.72] max-w-[380px] mx-auto mb-12">
-            Estou disponível para novos projetos, colaborações e oportunidades. Entre em contato — vamos conversar.
+            Me conta o que você precisa. Respondo por e-mail — direto, sem formulário.
           </p>
 
           <div className="flex flex-wrap gap-2.5 justify-center">
@@ -46,6 +46,8 @@ export function Contact() {
               <a
                 key={l.label}
                 href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 text-[17px] font-medium px-5 py-3 rounded-md transition-all duration-180 hover:-translate-y-0.5"
                 style={
                   l.accent

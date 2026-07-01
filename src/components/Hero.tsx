@@ -28,8 +28,8 @@ export function Hero() {
             <Reveal delay={140}>
               <div className="w-9 h-px bg-accent mb-6" />
               <p className="text-[17px] text-t3 leading-[1.75] max-w-[400px] mb-9">
-                Construo aplicações web completas — do backend ao frontend.
-                Foco em código limpo, performance e produtos que realmente funcionam.
+                Você fala direto comigo, do primeiro wireframe ao deploy.
+                Sem intermediários, sem enrolação — só entrega.
               </p>
             </Reveal>
 
@@ -53,7 +53,7 @@ export function Hero() {
                   onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.28)')}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr-h)')}
                 >
-                  Contato
+                  Falar comigo
                 </a>
               </div>
             </Reveal>

@@ -22,10 +22,10 @@ export function About() {
           {/* Direita */}
           <div className="space-y-[18px]">
             {[
-              'Sou um desenvolvedor Full Stack focado em construir produtos digitais que resolvem problemas reais. Trabalho com todo o ciclo de desenvolvimento — da ideia à produção — entregando aplicações rápidas, organizadas e fáceis de manter.',
+              'Sou desenvolvedor Full Stack e trabalho com o ciclo completo — da ideia ao ar. Escrevo código organizado, tomo decisões técnicas com propósito e entrego sem precisar de intermediários.',
               'Tenho experiência com React, Node.js, TypeScript e bancos de dados relacionais e não-relacionais. Mais importante: sei tomar decisões técnicas que fazem sentido para o produto, não apenas para o código.',
-              'Trabalho bem com times e com clientes. Gosto de entender o problema antes de escrever a solução, e de comunicar com clareza o que está sendo construído e por quê.',
-              'Se você tem um produto para construir — ou um sistema para melhorar — estou disponível para conversar.',
+              'Quando você trabalha comigo, fala diretamente comigo. Sem passa-ficha, sem mal-entendido entre o que você pediu e o que foi construído.',
+              'Tem algo para construir ou melhorar? Me manda um e-mail — respondo rápido.',
             ].map((text, i) => (
               <Reveal key={i} delay={i * 70}>
                 <p className="text-[16.5px] text-t2 leading-[1.85]">{text}</p>

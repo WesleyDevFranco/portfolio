@@ -77,14 +77,6 @@ function FeaturedCard({ project, onClick }: { project: Project; onClick: () => v
           {project.icon}
         </div>
 
-        {/* Badge */}
-        <div
-          className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-          style={{ background: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.18)' }}
-        >
-          <span className="w-1 h-1 rounded-full bg-accent" />
-          <span className="text-[14px] font-medium tracking-[0.06em] text-accent">Destaque</span>
-        </div>
 
         <div
           className="absolute bottom-0 inset-x-0 h-2/5"
@@ -223,7 +215,7 @@ export function Projects() {
           {featured.length > 0 && (
             <div className="mb-12">
               <Reveal>
-                <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-5">
+                <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-accent block mb-5">
                   Destaques
                 </span>
               </Reveal>
@@ -245,7 +237,7 @@ export function Projects() {
           {rest.length > 0 && (
             <div>
               <Reveal>
-                <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-5">
+                <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-accent block mb-5">
                   {featured.length > 0 ? 'Outros projetos' : 'Projetos'}
                 </span>
               </Reveal>

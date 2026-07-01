@@ -21,6 +21,8 @@ export function Footer() {
             <a
               key={l.label}
               href={l.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-[17.5px] text-t4 hover:text-t2 transition-colors duration-150"
             >
               {l.label}

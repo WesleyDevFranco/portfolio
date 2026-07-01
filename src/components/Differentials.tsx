@@ -9,13 +9,13 @@ function Icon({ children }: { children: ReactNode }) {
 const items = [
   {
     title: 'Código Limpo',
-    desc: 'Código legível, bem estruturado e organizado — fácil de manter, evoluir e qualquer dev compreender.',
+    desc: 'Legível, bem estruturado e seguindo princípios como SOLID e Clean Architecture — fácil de manter e evoluir.',
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
   },
   {
-    title: 'Boas Práticas',
-    desc: 'SOLID, DRY, Clean Architecture — princípios de engenharia aplicados de forma consistente.',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+    title: 'Comunicação Direta',
+    desc: 'Você fala diretamente com quem está desenvolvendo. Decisões mais rápidas, menos ruído, mais resultado.',
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
   },
   {
     title: 'Performance',

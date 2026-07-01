@@ -55,7 +55,7 @@ export function Process() {
 
         <Reveal><span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Metodologia</span></Reveal>
         <Reveal delay={70}><h2 className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-3">Como desenvolvo software</h2></Reveal>
-        <Reveal delay={140}><p className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px] mb-14">Um processo estruturado que garante código de qualidade e entregas que realmente funcionam.</p></Reveal>
+        <Reveal delay={140}><p className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px] mb-14">Cada projeto segue um processo claro — sem surpresas no meio do caminho e sem retrabalho no final.</p></Reveal>
 
         <Reveal delay={70}>
           <div
