@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter, IM_Fell_Double_Pica } from 'next/font/google'
+import { Plus_Jakarta_Sans, IM_Fell_Double_Pica } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({
+const plusJakarta = Plus_Jakarta_Sans({
+  weight: ['400', '500', '600'],
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${fell.variable}`}>
+    <html lang="pt-BR" className={`${plusJakarta.variable} ${fell.variable}`}>
       <body className="font-sans bg-bg text-t1">{children}</body>
     </html>
   )

@@ -40,7 +40,7 @@ export function Navbar() {
           {/* Logo */}
           <button
             onClick={() => handleNav('#inicio')}
-            className="font-serif text-base text-t1 tracking-wide cursor-pointer"
+            className="font-serif text-[21px] text-t1 tracking-wide cursor-pointer"
           >
             Wesley Franco
           </button>
@@ -51,7 +51,7 @@ export function Navbar() {
               <button
                 key={l.href}
                 onClick={() => handleNav(l.href)}
-                className="text-[13px] text-t3 hover:text-t1 transition-colors duration-150 cursor-pointer"
+                className="text-[17px] text-t3 hover:text-t1 transition-colors duration-150 cursor-pointer"
               >
                 {l.label}
               </button>
@@ -62,7 +62,7 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => handleNav('#contato')}
-              className="text-[12px] font-medium text-t1 px-3.5 py-1.5 rounded-md transition-colors duration-150 hidden sm:block cursor-pointer"
+              className="text-[14px] font-medium text-t1 px-3.5 py-1.5 rounded-md transition-colors duration-150 hidden sm:block cursor-pointer"
               style={{ border: '1px solid var(--bdr-h)' }}
               onMouseEnter={(e) => ((e.target as HTMLElement).style.borderColor = 'rgba(255,255,255,0.3)')}
               onMouseLeave={(e) => ((e.target as HTMLElement).style.borderColor = 'var(--bdr-h)')}
@@ -108,7 +108,7 @@ export function Navbar() {
             <button
               key={l.href}
               onClick={() => handleNav(l.href)}
-              className="text-left text-[15px] text-t2 hover:text-t1 transition-colors py-2.5 border-b cursor-pointer"
+              className="text-left text-[17px] text-t2 hover:text-t1 transition-colors py-2.5 border-b cursor-pointer"
               style={{ borderColor: 'var(--bdr)' }}
             >
               {l.label}
@@ -116,7 +116,7 @@ export function Navbar() {
           ))}
           <button
             onClick={() => handleNav('#contato')}
-            className="mt-3 text-[13px] font-medium text-t1 py-2.5 rounded-md cursor-pointer"
+            className="mt-3 text-[17px] font-medium text-t1 py-2.5 rounded-md cursor-pointer"
             style={{ border: '1px solid var(--bdr-h)' }}
           >
             Entrar em contato

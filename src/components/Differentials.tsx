@@ -44,8 +44,8 @@ export function Differentials() {
     <section id="diferenciais" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
 
-        <Reveal><span className="text-[11px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Diferenciais</span></Reveal>
-        <Reveal delay={70}><h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-t1 mb-14">O que você pode esperar</h2></Reveal>
+        <Reveal><span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Diferenciais</span></Reveal>
+        <Reveal delay={70}><h2 className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-14">O que você pode esperar</h2></Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {items.map((item, i) => (
@@ -57,8 +57,8 @@ export function Differentials() {
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr)')}
               >
                 <Icon>{item.icon}</Icon>
-                <div className="font-serif text-[15px] text-t1 tracking-[0.01em] mb-1.5">{item.title}</div>
-                <p className="text-[12.5px] text-t3 leading-[1.62]">{item.desc}</p>
+                <div className="font-serif text-[17px] text-t1 tracking-[0.01em] mb-1.5">{item.title}</div>
+                <p className="text-[16.5px] text-t3 leading-[1.62]">{item.desc}</p>
               </div>
             </Reveal>
           ))}

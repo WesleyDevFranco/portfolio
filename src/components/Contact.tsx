@@ -33,11 +33,11 @@ export function Contact() {
     <section id="contato" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12 text-center">
         <Reveal>
-          <span className="text-[11px] font-medium tracking-[0.13em] uppercase text-t4 block mb-4">Contato</span>
+          <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-4">Contato</span>
           <h2 className="font-serif text-[clamp(38px,5.5vw,72px)] text-t1 leading-[1.05] tracking-[0.01em] mb-5">
             Vamos construir<br />algo juntos?
           </h2>
-          <p className="text-[14.5px] text-t3 leading-[1.72] max-w-[380px] mx-auto mb-12">
+          <p className="text-[16.5px] text-t3 leading-[1.72] max-w-[380px] mx-auto mb-12">
             Estou disponível para novos projetos, colaborações e oportunidades. Entre em contato — vamos conversar.
           </p>
 
@@ -46,7 +46,7 @@ export function Contact() {
               <a
                 key={l.label}
                 href={l.href}
-                className="inline-flex items-center gap-2.5 text-[13px] font-medium px-5 py-3 rounded-md transition-all duration-180 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2.5 text-[17px] font-medium px-5 py-3 rounded-md transition-all duration-180 hover:-translate-y-0.5"
                 style={
                   l.accent
                     ? { border: '1px solid rgba(201,168,76,0.3)', color: '#C9A84C' }

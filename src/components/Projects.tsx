@@ -83,7 +83,7 @@ function FeaturedCard({ project, onClick }: { project: Project; onClick: () => v
           style={{ background: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.18)' }}
         >
           <span className="w-1 h-1 rounded-full bg-accent" />
-          <span className="text-[10px] font-medium tracking-[0.06em] text-accent">Destaque</span>
+          <span className="text-[14px] font-medium tracking-[0.06em] text-accent">Destaque</span>
         </div>
 
         <div
@@ -94,14 +94,14 @@ function FeaturedCard({ project, onClick }: { project: Project; onClick: () => v
 
       {/* Body */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-serif text-[18px] text-t1 mb-2.5 tracking-[0.01em]">{project.name}</h3>
-        <p className="text-[13px] text-t3 leading-[1.68] mb-4 flex-1">{project.desc}</p>
+        <h3 className="font-serif text-[20px] text-t1 mb-2.5 tracking-[0.01em]">{project.name}</h3>
+        <p className="text-[17px] text-t3 leading-[1.68] mb-4 flex-1">{project.desc}</p>
 
         <div className="flex flex-wrap gap-1.5 mb-5">
           {project.tags.map((t) => (
             <span
               key={t}
-              className="text-[10px] font-medium tracking-[0.03em] text-t4 px-2 py-0.5 rounded-full"
+              className="text-[14px] font-medium tracking-[0.03em] text-t4 px-2 py-0.5 rounded-full"
               style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--bdr)' }}
             >
               {t}
@@ -109,7 +109,7 @@ function FeaturedCard({ project, onClick }: { project: Project; onClick: () => v
           ))}
         </div>
 
-        <span className="text-[12px] font-medium text-accent transition-opacity duration-150 group-hover:opacity-80">
+        <span className="text-[14px] font-medium text-accent transition-opacity duration-150 group-hover:opacity-80">
           Ver detalhes →
         </span>
       </div>
@@ -145,14 +145,14 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
 
       {/* Body */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-serif text-[16px] text-t1 mb-2 tracking-[0.01em]">{project.name}</h3>
-        <p className="text-[12.5px] text-t3 leading-[1.65] mb-4 flex-1">{project.desc}</p>
+        <h3 className="font-serif text-[20px] text-t1 mb-2 tracking-[0.01em]">{project.name}</h3>
+        <p className="text-[16.5px] text-t3 leading-[1.65] mb-4 flex-1">{project.desc}</p>
 
         <div className="flex flex-wrap gap-1.5 mb-5">
           {project.tags.map((t) => (
             <span
               key={t}
-              className="text-[10px] font-medium tracking-[0.03em] text-t4 px-2 py-0.5 rounded-full"
+              className="text-[14px] font-medium tracking-[0.03em] text-t4 px-2 py-0.5 rounded-full"
               style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--bdr)' }}
             >
               {t}
@@ -163,7 +163,7 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
         <div className="flex gap-2 mt-auto">
           <button
             onClick={onClick}
-            className="text-[12px] font-medium text-accent px-3.5 py-1.5 rounded-md transition-all duration-150 hover:bg-[rgba(201,168,76,0.07)]"
+            className="text-[14px] font-medium text-accent px-3.5 py-1.5 rounded-md transition-all duration-150 hover:bg-[rgba(201,168,76,0.07)]"
             style={{ border: '1px solid rgba(201,168,76,0.26)' }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = '#C9A84C')}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.26)')}
@@ -175,7 +175,7 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] font-medium text-t3 px-3.5 py-1.5 rounded-md transition-colors duration-150 hover:text-t1"
+              className="text-[14px] font-medium text-t3 px-3.5 py-1.5 rounded-md transition-colors duration-150 hover:text-t1"
               style={{ border: '1px solid var(--bdr)' }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr-h)')}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr)')}
@@ -207,13 +207,13 @@ export function Projects() {
           {/* Header */}
           <div className="mb-14">
             <Reveal>
-              <span className="text-[11px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Portfólio</span>
+              <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Portfólio</span>
             </Reveal>
             <Reveal delay={70}>
-              <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-t1 mb-3">Projetos Selecionados</h2>
+              <h2 className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-3">Projetos Selecionados</h2>
             </Reveal>
             <Reveal delay={140}>
-              <p className="text-[14.5px] text-t3 leading-[1.72] max-w-[480px]">
+              <p className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px]">
                 Aplicações construídas com foco em qualidade, performance e boas práticas.
               </p>
             </Reveal>
@@ -223,7 +223,7 @@ export function Projects() {
           {featured.length > 0 && (
             <div className="mb-12">
               <Reveal>
-                <span className="text-[11px] font-medium tracking-[0.13em] uppercase text-t4 block mb-5">
+                <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-5">
                   Destaques
                 </span>
               </Reveal>
@@ -245,7 +245,7 @@ export function Projects() {
           {rest.length > 0 && (
             <div>
               <Reveal>
-                <span className="text-[11px] font-medium tracking-[0.13em] uppercase text-t4 block mb-5">
+                <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-5">
                   {featured.length > 0 ? 'Outros projetos' : 'Projetos'}
                 </span>
               </Reveal>
@@ -262,7 +262,7 @@ export function Projects() {
                   <Reveal>
                     <button
                       onClick={() => setShowAll(!showAll)}
-                      className="text-[12px] text-t3 hover:text-t1 transition-colors px-3.5 py-1.5 rounded-md"
+                      className="text-[14px] text-t3 hover:text-t1 transition-colors px-3.5 py-1.5 rounded-md"
                       style={{ border: '1px solid var(--bdr)' }}
                     >
                       {showAll ? 'Ver menos' : `Ver todos (${rest.length})`}

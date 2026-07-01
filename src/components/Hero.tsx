@@ -13,21 +13,21 @@ export function Hero() {
           {/* ── Esquerda: texto ── */}
           <div>
             <Reveal>
-              <p className="text-[12px] font-medium tracking-[0.1em] uppercase text-t4 mb-5 flex items-center gap-3">
+              <p className="text-[14px] font-medium tracking-[0.1em] uppercase text-t4 mb-5 flex items-center gap-3">
                 <span className="block w-6 h-px bg-t4" />
                 Desenvolvedor Full Stack
               </p>
             </Reveal>
 
             <Reveal delay={70}>
-              <h1 className="font-serif text-[clamp(56px,8vw,104px)] leading-[0.93] tracking-[0.01em] text-t1 mb-8">
+              <h1 className="font-serif text-[clamp(68px,9vw,120px)] leading-[0.93] tracking-[0.01em] text-t1 mb-8">
                 Wesley<br />Franco
               </h1>
             </Reveal>
 
             <Reveal delay={140}>
               <div className="w-9 h-px bg-accent mb-6" />
-              <p className="text-[15px] text-t3 leading-[1.75] max-w-[400px] mb-9">
+              <p className="text-[17px] text-t3 leading-[1.75] max-w-[400px] mb-9">
                 Construo aplicações web completas — do backend ao frontend.
                 Foco em código limpo, performance e produtos que realmente funcionam.
               </p>
@@ -38,7 +38,7 @@ export function Hero() {
                 <a
                   href="#projetos"
                   onClick={(e) => { e.preventDefault(); document.querySelector('#projetos')?.scrollIntoView({ behavior: 'smooth' }) }}
-                  className="inline-flex items-center gap-2 bg-t1 text-bg text-[13px] font-medium px-5 py-2.5 rounded-md hover:bg-t2 transition-all duration-200 hover:-translate-y-px"
+                  className="inline-flex items-center gap-2 bg-t1 text-bg text-[17px] font-medium px-5 py-2.5 rounded-md hover:bg-t2 transition-all duration-200 hover:-translate-y-px"
                 >
                   Ver Projetos
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -48,7 +48,7 @@ export function Hero() {
                 <a
                   href="#contato"
                   onClick={(e) => { e.preventDefault(); document.querySelector('#contato')?.scrollIntoView({ behavior: 'smooth' }) }}
-                  className="inline-flex items-center gap-2 text-t2 text-[13px] font-medium px-5 py-2.5 rounded-md transition-all duration-200 hover:text-t1"
+                  className="inline-flex items-center gap-2 text-t2 text-[17px] font-medium px-5 py-2.5 rounded-md transition-all duration-200 hover:text-t1"
                   style={{ border: '1px solid var(--bdr-h)' }}
                   onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.28)')}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr-h)')}
@@ -75,7 +75,7 @@ export function Hero() {
                   <span className="font-serif text-[64px] text-t4 opacity-30 leading-none tracking-widest">
                     WF
                   </span>
-                  <span className="text-[10px] font-medium tracking-[0.12em] uppercase text-t4 opacity-40">
+                  <span className="text-[14px] font-medium tracking-[0.12em] uppercase text-t4 opacity-40">
                     Inserir foto aqui
                   </span>
                 </div>

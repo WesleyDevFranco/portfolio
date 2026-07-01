@@ -12,8 +12,8 @@ export function Timeline() {
     <section id="trajetoria" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
 
-        <Reveal><span className="text-[11px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Trajetória</span></Reveal>
-        <Reveal delay={70}><h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-t1 mb-14">Linha do Tempo</h2></Reveal>
+        <Reveal><span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Trajetória</span></Reveal>
+        <Reveal delay={70}><h2 className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-14">Linha do Tempo</h2></Reveal>
 
         <Reveal delay={70}>
           <div className="relative pl-7 md:pl-8">
@@ -36,15 +36,15 @@ export function Timeline() {
                   />
 
                   <span
-                    className="text-[11.5px] font-semibold pt-0.5"
+                    className="text-[17.5px] font-semibold pt-0.5"
                     style={{ color: ev.current ? '#C9A84C' : '#3A3A3A' }}
                   >
                     {ev.year}
                   </span>
 
                   <div>
-                    <h4 className="font-serif text-[15.5px] text-t1 tracking-[0.01em] mb-1.5">{ev.title}</h4>
-                    <p className="text-[13px] text-t3 leading-[1.68]">{ev.desc}</p>
+                    <h4 className="font-serif text-[17.5px] text-t1 tracking-[0.01em] mb-1.5">{ev.title}</h4>
+                    <p className="text-[17px] text-t3 leading-[1.68]">{ev.desc}</p>
                   </div>
                 </div>
               ))}

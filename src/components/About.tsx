@@ -8,7 +8,7 @@ export function About() {
 
           {/* Esquerda sticky */}
           <div className="lg:sticky lg:top-20">
-            <Reveal><span className="text-[11px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Sobre</span></Reveal>
+            <Reveal><span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Sobre</span></Reveal>
             <Reveal delay={70}>
               <h2 className="font-serif text-[clamp(36px,4.5vw,52px)] text-t1 leading-[1.05] tracking-[0.01em] mb-6">
                 Quem<br />sou eu
@@ -28,7 +28,7 @@ export function About() {
               'Se você tem um produto para construir — ou um sistema para melhorar — estou disponível para conversar.',
             ].map((text, i) => (
               <Reveal key={i} delay={i * 70}>
-                <p className="text-[14.5px] text-t2 leading-[1.85]">{text}</p>
+                <p className="text-[16.5px] text-t2 leading-[1.85]">{text}</p>
               </Reveal>
             ))}
           </div>

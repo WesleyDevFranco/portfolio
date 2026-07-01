@@ -100,7 +100,7 @@ export function ProjectModal({ project, onClose }: Props) {
             {project.tags.map((t) => (
               <span
                 key={t}
-                className="text-[10px] font-medium tracking-[0.03em] text-t4 px-2 py-0.5 rounded-full"
+                className="text-[14px] font-medium tracking-[0.03em] text-t4 px-2 py-0.5 rounded-full"
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--bdr)' }}
               >
                 {t}
@@ -112,7 +112,7 @@ export function ProjectModal({ project, onClose }: Props) {
             {project.name}
           </h3>
 
-          <p className="text-[13.5px] text-t3 leading-[1.78] mb-7">{project.longDesc}</p>
+          <p className="text-[17.5px] text-t3 leading-[1.78] mb-7">{project.longDesc}</p>
 
           {/* Actions */}
           <div className="flex flex-wrap gap-2">
@@ -121,7 +121,7 @@ export function ProjectModal({ project, onClose }: Props) {
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[12px] font-medium text-accent px-4 py-2 rounded-md transition-all duration-150 hover:bg-[rgba(201,168,76,0.07)]"
+                className="text-[14px] font-medium text-accent px-4 py-2 rounded-md transition-all duration-150 hover:bg-[rgba(201,168,76,0.07)]"
                 style={{ border: '1px solid rgba(201,168,76,0.26)' }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = '#C9A84C')}
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.26)')}
@@ -134,7 +134,7 @@ export function ProjectModal({ project, onClose }: Props) {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[12px] font-medium text-t3 px-4 py-2 rounded-md transition-colors duration-150 hover:text-t1"
+                className="text-[14px] font-medium text-t3 px-4 py-2 rounded-md transition-colors duration-150 hover:text-t1"
                 style={{ border: '1px solid var(--bdr)' }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr-h)')}
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr)')}
@@ -147,7 +147,7 @@ export function ProjectModal({ project, onClose }: Props) {
                 href={project.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[12px] font-medium text-t3 px-4 py-2 rounded-md transition-colors duration-150 hover:text-t1"
+                className="text-[14px] font-medium text-t3 px-4 py-2 rounded-md transition-colors duration-150 hover:text-t1"
                 style={{ border: '1px solid var(--bdr)' }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr-h)')}
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr)')}
