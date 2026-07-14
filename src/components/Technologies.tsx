@@ -1,4 +1,5 @@
 import { Reveal } from './Reveal'
+import { Stagger } from './Stagger'
 
 const categories = [
   {
@@ -28,12 +29,11 @@ export function Technologies() {
         <Reveal delay={70}><h2 className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-3">Tecnologias</h2></Reveal>
         <Reveal delay={140}><p className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px] mb-14">Ferramentas que utilizo para construir aplicações modernas, escaláveis e de alta performance.</p></Reveal>
 
-        <Reveal delay={70}>
-          <div
-            className="grid grid-cols-2 lg:grid-cols-4 rounded-[10px] overflow-hidden"
-            style={{ border: '1px solid var(--bdr)' }}
-          >
-            {categories.map((cat, i) => (
+        <Stagger
+          className="grid grid-cols-2 lg:grid-cols-4 rounded-[10px] overflow-hidden"
+          style={{ border: '1px solid var(--bdr)' }}
+        >
+          {categories.map((cat, i) => (
               <div
                 key={cat.title}
                 className="p-8 lg:p-[34px_30px]"
@@ -58,8 +58,7 @@ export function Technologies() {
                 </ul>
               </div>
             ))}
-          </div>
-        </Reveal>
+        </Stagger>
       </div>
     </section>
   )
