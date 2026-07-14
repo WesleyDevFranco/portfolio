@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { Reveal } from './Reveal'
+import { Stagger } from './Stagger'
 import { ProjectModal } from './ProjectModal'
 import type { Project } from './ProjectModal'
 
@@ -219,17 +220,15 @@ export function Projects() {
                   Destaques
                 </span>
               </Reveal>
-              <div
+              <Stagger
                 className={`grid gap-[18px] ${
                   featured.length === 1 ? 'grid-cols-1 max-w-[560px]' : 'grid-cols-1 md:grid-cols-2'
                 }`}
               >
-                {featured.map((p, i) => (
-                  <Reveal key={p.name} delay={i * 70}>
-                    <FeaturedCard project={p} onClick={() => setActive(p)} />
-                  </Reveal>
+                {featured.map((p) => (
+                  <FeaturedCard key={p.name} project={p} onClick={() => setActive(p)} />
                 ))}
-              </div>
+              </Stagger>
             </div>
           )}
 
@@ -241,13 +240,11 @@ export function Projects() {
                   {featured.length > 0 ? 'Outros projetos' : 'Projetos'}
                 </span>
               </Reveal>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[18px]">
-                {visibleRest.map((p, i) => (
-                  <Reveal key={p.name} delay={i * 70}>
-                    <ProjectCard project={p} onClick={() => setActive(p)} />
-                  </Reveal>
+              <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[18px]">
+                {visibleRest.map((p) => (
+                  <ProjectCard key={p.name} project={p} onClick={() => setActive(p)} />
                 ))}
-              </div>
+              </Stagger>
 
               {rest.length > 6 && (
                 <div className="flex justify-center mt-8">
