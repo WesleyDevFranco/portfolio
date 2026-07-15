@@ -27,6 +27,12 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Modo decidido pelo script inline no <head>, antes do primeiro paint.
+   Sem isso o loader piscaria em toda revisita. */
+html[data-intro='none'] .wf-loader {
+  display: none !important;
+}
+
 body {
   background: #0B0B0B;
   color: #FFFFFF;
