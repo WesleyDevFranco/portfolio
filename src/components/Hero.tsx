@@ -1,8 +1,10 @@
 'use client'
 import { useRef, useLayoutEffect } from 'react'
+import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
+import { resolveIntroMode, onIntroDone } from '@/lib/intro'
 import { Reveal } from './Reveal'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
@@ -16,18 +18,32 @@ export function Hero() {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
 
+    let offIntro: (() => void) | undefined
+    let safety: ReturnType<typeof setTimeout> | undefined
+
     const ctx = gsap.context(() => {
-      // #1 — Headline: lines rise in from behind a mask on load
       const headline = headlineRef.current
       if (headline) {
-        const split = new SplitText(headline, { type: 'lines', mask: 'lines' })
-        gsap.from(split.lines, {
-          yPercent: 115,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.12,
-          delay: 0.1,
-        })
+        if (resolveIntroMode() === 'flip') {
+          // O loader vai voar o nome dele até aqui e pousar em cima deste
+          // título. Ele fica invisível até o pouso, quando trocamos os dois
+          // no mesmo frame.
+          gsap.set(headline, { opacity: 0 })
+          const reveal = () => gsap.set(headline, { opacity: 1 })
+          offIntro = onIntroDone(reveal)
+          // Rede de segurança: nunca deixar o título invisível
+          safety = setTimeout(reveal, 6000)
+        } else {
+          // #1 — Sem loader: o título faz a própria entrada
+          const split = new SplitText(headline, { type: 'lines', mask: 'lines' })
+          gsap.from(split.lines, {
+            yPercent: 115,
+            duration: 0.9,
+            ease: 'power3.out',
+            stagger: 0.12,
+            delay: 0.1,
+          })
+        }
       }
 
       // #3 — Photo: subtle parallax drift as the hero scrolls away
@@ -45,7 +61,11 @@ export function Hero() {
       }
     }, sectionRef)
 
-    return () => ctx.revert()
+    return () => {
+      offIntro?.()
+      if (safety) clearTimeout(safety)
+      ctx.revert()
+    }
   }, [])
 
   return (
@@ -70,7 +90,8 @@ export function Hero() {
               ref={headlineRef}
               className="font-serif text-[clamp(68px,9vw,120px)] leading-[0.93] tracking-[0.01em] text-t1 mb-8"
             >
-              Wesley<br />Franco
+              <span className="block" data-hero-word="Wesley">Wesley</span>
+              <span className="block" data-hero-word="Franco">Franco</span>
             </h1>
 
             <Reveal delay={140}>
@@ -111,22 +132,21 @@ export function Hero() {
           <Reveal delay={140} className="flex justify-center lg:justify-end">
             <div ref={photoRef} className="relative">
               <div
-                className="w-full max-w-[340px] lg:max-w-none lg:w-[380px] aspect-[4/5] bg-surface rounded-lg overflow-hidden flex items-center justify-center"
+                className="relative w-full max-w-[340px] lg:max-w-none lg:w-[380px] aspect-[4/5] bg-surface rounded-lg overflow-hidden"
                 style={{ border: '1px solid var(--bdr-h)', borderLeft: '2px solid #C9A84C' }}
               >
-                {/*
-                  Para adicionar sua foto, substitua este bloco por:
-                  <Image src="/photo.jpg" alt="Wesley Franco" fill className="object-cover" />
-                  e adicione o arquivo em /public/photo.jpg
-                */}
-                <div className="flex flex-col items-center gap-3 select-none">
-                  <span className="font-serif text-[64px] text-t4 opacity-30 leading-none tracking-widest">
-                    WF
-                  </span>
-                  <span className="text-[14px] font-medium tracking-[0.12em] uppercase text-t4 opacity-40">
-                    Inserir foto aqui
-                  </span>
-                </div>
+                {/* A foto é 3:2 e a moldura 4:5, então `cover` corta as laterais.
+                    `sizes` considera esse corte: a fonte precisa ser ~1.9x a
+                    largura da caixa para preencher — pedir só a largura da caixa
+                    entregaria uma imagem ampliada e borrada. */}
+                <Image
+                  src="/photo.jpg"
+                  alt="Wesley Franco"
+                  fill
+                  preload
+                  sizes="(max-width: 1024px) 640px, 720px"
+                  className="object-cover object-center"
+                />
               </div>
 
               {/* Detalhe decorativo deslocado */}
