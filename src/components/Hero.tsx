@@ -4,10 +4,12 @@ import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
-import { resolveIntroMode, onIntroDone } from '@/lib/intro'
-import { Reveal } from './Reveal'
+import { resolveIntroMode, onIntroDone, onIntroFly, FLY_DURATION } from '@/lib/intro'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
+
+/** Defasagem entre a subida de cada elemento do Hero. */
+const RISE_STAGGER = 0.06
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -19,31 +21,63 @@ export function Hero() {
     if (prefersReduced) return
 
     let offIntro: (() => void) | undefined
+    let offFly: (() => void) | undefined
     let safety: ReturnType<typeof setTimeout> | undefined
 
     const ctx = gsap.context(() => {
       const headline = headlineRef.current
-      if (headline) {
-        if (resolveIntroMode() === 'flip') {
-          // O loader vai voar o nome dele até aqui e pousar em cima deste
-          // título. Ele fica invisível até o pouso, quando trocamos os dois
-          // no mesmo frame.
-          gsap.set(headline, { opacity: 0 })
-          const reveal = () => gsap.set(headline, { opacity: 1 })
-          offIntro = onIntroDone(reveal)
-          // Rede de segurança: nunca deixar o título invisível
-          safety = setTimeout(reveal, 6000)
-        } else {
-          // #1 — Sem loader: o título faz a própria entrada
-          const split = new SplitText(headline, { type: 'lines', mask: 'lines' })
-          gsap.from(split.lines, {
-            yPercent: 115,
-            duration: 0.9,
-            ease: 'power3.out',
-            stagger: 0.12,
-            delay: 0.1,
-          })
+      const els = gsap.utils.toArray<HTMLElement>('[data-hero-el]', sectionRef.current)
+
+      if (resolveIntroMode() === 'flip') {
+        // O loader voa o nome dele até aqui e pousa em cima deste título, que
+        // fica invisível até o pouso — trocamos os dois no mesmo frame.
+        if (headline) gsap.set(headline, { opacity: 0 })
+
+        // Cada elemento parte de FORA da tela: o topo dele encostado na borda
+        // inferior da viewport. Como cada um está numa altura diferente, cada
+        // um percorre uma distância diferente — é isso que dá naturalidade.
+        // Medimos todos antes de deslocar (transform não afeta layout, mas
+        // manter a medição separada evita depender disso).
+        const offsets = els.map((el) => window.innerHeight - el.getBoundingClientRect().top)
+        els.forEach((el, i) => gsap.set(el, { y: offsets[i] }))
+
+        const settle = () => {
+          if (headline) gsap.set(headline, { opacity: 1 })
+          gsap.set(els, { y: 0 })
         }
+
+        // Os elementos sobem DURANTE o voo do nome. A duração de cada um
+        // encolhe conforme seu atraso, então TODOS pousam no mesmo instante em
+        // que as letras chegam — é isso que faz as duas telas parecerem um
+        // movimento só.
+        offFly = onIntroFly(() => {
+          els.forEach((el, i) => {
+            const delay = i * RISE_STAGGER
+            gsap.to(el, {
+              y: 0,
+              duration: FLY_DURATION - delay,
+              delay,
+              ease: 'power2.out',
+            })
+          })
+        })
+
+        offIntro = onIntroDone(() => {
+          if (headline) gsap.set(headline, { opacity: 1 })
+        })
+        // Rede de segurança: nunca deixar o Hero invisível
+        safety = setTimeout(settle, 6000)
+      } else if (headline) {
+        // Fallback: o script do intro não rodou, então não há voo para esperar
+        // e o título faz a própria entrada.
+        const split = new SplitText(headline, { type: 'lines', mask: 'lines' })
+        gsap.from(split.lines, {
+          yPercent: 115,
+          duration: 0.9,
+          ease: 'power3.out',
+          stagger: 0.12,
+          delay: 0.1,
+        })
       }
 
       // #3 — Photo: subtle parallax drift as the hero scrolls away
@@ -63,6 +97,7 @@ export function Hero() {
 
     return () => {
       offIntro?.()
+      offFly?.()
       if (safety) clearTimeout(safety)
       ctx.revert()
     }
@@ -79,12 +114,12 @@ export function Hero() {
 
           {/* ── Esquerda: texto ── */}
           <div>
-            <Reveal>
+            <div data-hero-el>
               <p className="text-[14px] font-medium tracking-[0.1em] uppercase text-t4 mb-5 flex items-center gap-3">
                 <span className="block w-6 h-px bg-t4" />
                 Desenvolvedor Full Stack
               </p>
-            </Reveal>
+            </div>
 
             <h1
               ref={headlineRef}
@@ -94,15 +129,15 @@ export function Hero() {
               <span className="block" data-hero-word="Franco">Franco</span>
             </h1>
 
-            <Reveal delay={140}>
+            <div data-hero-el>
               <div className="w-9 h-px bg-accent mb-6" />
               <p className="text-[17px] text-t3 leading-[1.75] max-w-[400px] mb-9">
                 Você fala direto comigo, do primeiro wireframe ao deploy.
                 Sem intermediários, sem enrolação — só entrega.
               </p>
-            </Reveal>
+            </div>
 
-            <Reveal delay={210}>
+            <div data-hero-el>
               <div className="flex flex-wrap gap-3">
                 <a
                   href="#projetos"
@@ -125,11 +160,11 @@ export function Hero() {
                   Falar comigo
                 </a>
               </div>
-            </Reveal>
+            </div>
           </div>
 
           {/* ── Direita: foto ── */}
-          <Reveal delay={140} className="flex justify-center lg:justify-end">
+          <div data-hero-el className="flex justify-center lg:justify-end">
             <div ref={photoRef} className="relative">
               <div
                 className="relative w-full max-w-[340px] lg:max-w-none lg:w-[380px] aspect-[4/5] bg-surface rounded-lg overflow-hidden"
@@ -155,7 +190,7 @@ export function Hero() {
                 style={{ border: '1px solid var(--bdr-h)' }}
               />
             </div>
-          </Reveal>
+          </div>
 
         </div>
       </div>

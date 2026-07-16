@@ -13,16 +13,47 @@
  */
 
 const INTRO_DONE = 'wf:intro-done'
+const INTRO_FLY = 'wf:intro-fly'
+
+/** Duração da barra de carregamento, em segundos. */
+export const LOAD_DURATION = 1.5
+/**
+ * Duração do voo do nome até o título do Hero.
+ *
+ * Compartilhada de propósito: os elementos do Hero sobem nesse MESMO intervalo,
+ * para pousarem junto com as letras. Se cada componente tivesse a sua constante,
+ * um ajuste em um dessincronizaria o outro silenciosamente.
+ */
+export const FLY_DURATION = 0.8
 
 export type IntroMode = 'flip' | 'none'
 
 let mode: IntroMode | null = null
 let done = false
+let flying = false
 
 export function resolveIntroMode(): IntroMode {
   if (mode !== null) return mode
   mode = document.documentElement.dataset.intro === 'flip' ? 'flip' : 'none'
   return mode
+}
+
+/** Avisa que o nome começou a voar — o Hero usa isso para subir seus elementos. */
+export function markIntroFly() {
+  if (flying) return
+  flying = true
+  window.dispatchEvent(new Event(INTRO_FLY))
+}
+
+/** Executa `cb` quando o voo começar — imediatamente, se já começou. */
+export function onIntroFly(cb: () => void) {
+  if (flying) {
+    cb()
+    return () => {}
+  }
+  const handler = () => cb()
+  window.addEventListener(INTRO_FLY, handler, { once: true })
+  return () => window.removeEventListener(INTRO_FLY, handler)
 }
 
 export function markIntroDone() {

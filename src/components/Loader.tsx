@@ -2,16 +2,18 @@
 import { useRef, useLayoutEffect } from 'react'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-import { resolveIntroMode, markIntroDone } from '@/lib/intro'
+import {
+  resolveIntroMode,
+  markIntroFly,
+  markIntroDone,
+  LOAD_DURATION,
+  FLY_DURATION,
+} from '@/lib/intro'
 
 gsap.registerPlugin(SplitText)
 
 const WORDS = ['Wesley', 'Franco'] as const
 
-/** Duração do carregamento (barra + sequência das letras) em segundos. */
-const LOAD_DURATION = 1.5
-/** Duração do voo das palavras até o título do Hero. */
-const FLY_DURATION = 0.8
 /** Duração do "pop" de cada letra (dourado → branco + escala). */
 const POP_DURATION = 0.35
 
@@ -101,6 +103,10 @@ export function Loader() {
 
       if (canFly) {
         tl.add(() => {
+          // Dispara junto com o voo: o Hero sobe seus elementos no mesmo
+          // intervalo, para tudo assentar no mesmo instante.
+          markIntroFly()
+
           // As letras já chegaram brancas: desfaz a divisão para cada palavra
           // voltar a ser um texto único — exatamente como o <span> do Hero.
           // Voar caractere a caractere renderiza diferente do destino e o
