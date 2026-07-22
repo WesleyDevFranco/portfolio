@@ -1,7 +1,8 @@
 'use client'
-import { useRef, useLayoutEffect } from 'react'
+import { useRef } from 'react'
 import Image from 'next/image'
-import { gsap } from 'gsap'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import { resolveIntroMode, onIntroDone, onIntroFly, FLY_DURATION } from '@/lib/intro'
@@ -15,18 +16,15 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const photoRef = useRef<HTMLDivElement>(null)
+  const decorRef = useRef<HTMLDivElement>(null)
 
-  useLayoutEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) return
+    useGSAP(() => {
+      let offIntro: (() => void) | undefined
+      let offFly: (() => void) | undefined
+      let safety: ReturnType<typeof setTimeout> | undefined
 
-    let offIntro: (() => void) | undefined
-    let offFly: (() => void) | undefined
-    let safety: ReturnType<typeof setTimeout> | undefined
-
-    const ctx = gsap.context(() => {
       const headline = headlineRef.current
-      const els = gsap.utils.toArray<HTMLElement>('[data-hero-el]', sectionRef.current)
+      const els = gsap.utils.toArray<HTMLElement>('[data-hero-el]')
 
       if (resolveIntroMode() === 'flip') {
         // O loader voa o nome dele até aqui e pousa em cima deste título, que
@@ -68,40 +66,60 @@ export function Hero() {
         // Rede de segurança: nunca deixar o Hero invisível
         safety = setTimeout(settle, 6000)
       } else if (headline) {
-        // Fallback: o script do intro não rodou, então não há voo para esperar
-        // e o título faz a própria entrada.
-        const split = new SplitText(headline, { type: 'lines', mask: 'lines' })
+        // Fallback: o título faz a própria entrada com mais peso e gravidade.
+        // Adicionamos a classe 'overflow-hidden' nas linhas pro texto nascer cortado perfeitamente.
+        const split = new SplitText(headline, { type: 'lines', linesClass: 'overflow-hidden' })
+        
         gsap.from(split.lines, {
-          yPercent: 115,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.12,
+          yPercent: 120,
+          rotation: 3,           // A mágica: nasce levemente inclinado e desamassa
+          duration: 1.4,         // Mais tempo de duração pra curva poder respirar
+          ease: 'expo.out',      // Curva explosiva: entra super rápido e vai freando suavemente no final
+          stagger: 0.15,         // Atrasa a entrada da segunda palavra em relação à primeira
           delay: 0.1,
         })
       }
 
       // #3 — Photo: subtle parallax drift as the hero scrolls away
+      // #3 — Photo: Parallax aprimorado (Ponto 2 aplicado)
       if (photoRef.current && sectionRef.current) {
         gsap.to(photoRef.current, {
-          yPercent: 9,
+          yPercent: 15, // Aumentamos para dar mais movimento
+          scale: 1.05,  // Leve zoom in durante o scroll
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
             end: 'bottom top',
-            scrub: true,
+            scrub: 1.2, // O número 1.2 deixa o parallax bem mais suave quando você para de rolar
+            invalidateOnRefresh: true, // Recalcula se o usuário redimensionar a tela
           },
         })
       }
-    }, sectionRef)
 
-    return () => {
-      offIntro?.()
-      offFly?.()
-      if (safety) clearTimeout(safety)
-      ctx.revert()
-    }
-  }, [])
+      // Flutuação infinita do elemento decorativo
+if (decorRef.current) {
+  gsap.to(decorRef.current, {
+    y: -12,             // Sobe 12px
+    rotation: 4,        // Dá uma leve giradinha
+    duration: 4,        // Bem lento
+    ease: 'sine.inOut', // O Sine é perfeito para coisas que "flutuam" e respiram
+    yoyo: true,         // Vai e volta
+    repeat: -1,         // Loop infinito
+  })
+}
+
+      // O cleanup DEVE ficar aqui dentro da função, antes de fechar o hook!
+      return () => {
+        offIntro?.()
+        offFly?.()
+        if (safety) clearTimeout(safety)
+      }
+      
+    }, { 
+      scope: sectionRef,
+      dependencies: [] 
+    }) // fim do hook
 
   return (
     <section
@@ -186,6 +204,7 @@ export function Hero() {
 
               {/* Detalhe decorativo deslocado */}
               <div
+                ref={decorRef}
                 className="absolute -bottom-3 -right-3 w-16 h-16 rounded-sm -z-10"
                 style={{ border: '1px solid var(--bdr-h)' }}
               />
