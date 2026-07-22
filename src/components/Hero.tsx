@@ -29,7 +29,7 @@ export function Hero() {
       if (resolveIntroMode() === 'flip') {
         // O loader voa o nome dele até aqui e pousa em cima deste título, que
         // fica invisível até o pouso — trocamos os dois no mesmo frame.
-        if (headline) gsap.set(headline, { opacity: 0 })
+        if (headline) gsap.set(headline, { opacity: 0.01 })
 
         // Cada elemento parte de FORA da tela: o topo dele encostado na borda
         // inferior da viewport. Como cada um está numa altura diferente, cada
@@ -61,7 +61,10 @@ export function Hero() {
         })
 
         offIntro = onIntroDone(() => {
-          if (headline) gsap.set(headline, { opacity: 1 })
+          if (headline) {
+            // Em vez de mudar instantaneamente, fazemos uma transição de 100 milissegundos
+            gsap.to(headline, { opacity: 1, duration: 0.1, ease: 'none' })
+          }
         })
         // Rede de segurança: nunca deixar o Hero invisível
         safety = setTimeout(settle, 6000)
