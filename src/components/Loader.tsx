@@ -119,32 +119,70 @@ export function Loader() {
           // viewport — as palavras voariam para coordenadas erradas.
           gsap.set(nameEl, { clearProps: 'transform,willChange' })
 
+          // Retângulo da TINTA (glifos), não da caixa. É isso que o olho vê e o
+          // que precisa coincidir. Caixa e tinta divergem aqui: o título é um
+          // <span> inline (caixa ≈ tinta), mas a palavra que voa é `fixed`
+          // (caixa = line-height 0.92; como é <1, a tinta transborda ~27px pra
+          // cima). Alinhar as caixas deixava a tinta 27px torta — o "salto".
+          const inkRect = (el: HTMLElement) => {
+            const r = document.createRange()
+            r.selectNodeContents(el)
+            return r.getBoundingClientRect()
+          }
+
           // Medir TUDO antes de tirar qualquer palavra do fluxo — a primeira a
           // virar `fixed` faria a outra deslizar e corromperia a medida.
           const from = loaderWords.map((w) => w!.getBoundingClientRect())
-          const to = heroWords.map((w) => w!.getBoundingClientRect())
+          const fromInk = loaderWords.map((w) => inkRect(w!))
+          const toBox = heroWords.map((w) => w!.getBoundingClientRect())
+          const heroInk = heroWords.map((w) => inkRect(w!))
           const toSize = heroWords.map((w) => parseFloat(getComputedStyle(w!).fontSize))
+          // letter-spacing do destino em px: `-0.04em` no container de 56px do
+          // loader vale ~-2.24px, mas no título de 152px vale ~-6.08px — herdar
+          // o do loader deixaria a palavra ~23px mais larga e ela encolheria.
+          const toLS = heroWords.map((w) => getComputedStyle(w!).letterSpacing)
 
+          // Fixa cada palavra JÁ no tamanho e letter-spacing nativos do título,
+          // ancorada (por ora) na caixa do destino, sem transform.
           loaderWords.forEach((word, i) => {
             gsap.set(word!, {
               position: 'fixed',
               margin: 0,
-              left: from[i].left,
-              top: from[i].top,
+              left: toBox[i].left,
+              top: toBox[i].top,
+              fontSize: toSize[i],
+              letterSpacing: toLS[i],
+              transformOrigin: 'left top',
+              willChange: 'transform',
             })
           })
 
-          // Cresce a FONTE de verdade (o navegador re-renderiza os glifos em
-          // cada tamanho) em vez de aplicar transform scale, que esticaria o
-          // texto — as caixas do loader e do Hero têm proporções diferentes.
+          // Onde a tinta caiu com scale 1 / translate 0. O offset tinta→caixa é
+          // constante para esta fonte/tamanho, então dá para resolver os dois
+          // extremos do voo em coordenadas de TINTA.
+          const landInk = loaderWords.map((w) => inkRect(w!))
+
+          // Voa por TRANSFORM (translate + scale) — tudo na GPU, sem animar
+          // font-size. A tinta parte exatamente de onde estava no loader e pousa
+          // exatamente sobre a tinta do título. No fim scale=1, render nativo.
           loaderWords.forEach((word, i) => {
-            gsap.to(word!, {
-              left: to[i].left,
-              top: to[i].top,
-              fontSize: toSize[i],
-              duration: FLY_DURATION,
-              ease: 'power2.inOut',
-            })
+            const io = { x: landInk[i].left - toBox[i].left, y: landInk[i].top - toBox[i].top }
+            const s = from[i].width / toBox[i].width
+            gsap.fromTo(
+              word!,
+              {
+                x: fromInk[i].left - toBox[i].left - io.x * s,
+                y: fromInk[i].top - toBox[i].top - io.y * s,
+                scale: s,
+              },
+              {
+                x: heroInk[i].left - landInk[i].left,
+                y: heroInk[i].top - landInk[i].top,
+                scale: 1,
+                duration: FLY_DURATION,
+                ease: 'power2.inOut',
+              },
+            )
           })
         }, LOAD_DURATION)
           .to(barRef.current, { opacity: 0, duration: 0.4, ease: 'power2.out' }, LOAD_DURATION)
@@ -188,12 +226,12 @@ export function Loader() {
           style={{ transform: 'scaleX(0)' }}
         />
 
-        {/* leading e tracking espelham o <h1> do Hero de propósito: as palavras
-            voam daqui até lá, e caixas com proporções diferentes fariam o texto
-            pousar desalinhado. */}
+        {/* Fonte, caixa, peso, leading e tracking espelham o <h1> do Hero de
+            propósito: as palavras voam daqui até lá, e qualquer diferença de
+            estilo faria o texto pousar com um "salto" visível. */}
         <div
           ref={nameRef}
-          className="flex gap-[0.28em] font-serif text-[clamp(30px,4.5vw,56px)] leading-[0.93] tracking-[0.01em]"
+          className="flex gap-[0.28em] font-sans font-extrabold uppercase text-[clamp(30px,4.5vw,56px)] leading-[0.92] tracking-[-0.04em]"
           style={{ opacity: 0 }}
         >
           {WORDS.map((w) => (
