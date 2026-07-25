@@ -1,198 +1,273 @@
 'use client'
-import { useRef, useLayoutEffect } from 'react'
+import { useRef } from 'react'
 import Image from 'next/image'
-import { gsap } from 'gsap'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
-import { resolveIntroMode, onIntroDone, onIntroFly, FLY_DURATION } from '@/lib/intro'
+import { resolveIntroMode, onIntroDone } from '@/lib/intro'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
-/** Defasagem entre a subida de cada elemento do Hero. */
-const RISE_STAGGER = 0.06
+/** Defasagem entre a entrada de cada elemento lateral do Hero. */
+const RISE_STAGGER = 0.09
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
+  const photoWrapRef = useRef<HTMLDivElement>(null)
   const photoRef = useRef<HTMLDivElement>(null)
+  const tiltRef = useRef<HTMLDivElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
 
-  useLayoutEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) return
-
+  useGSAP(() => {
     let offIntro: (() => void) | undefined
-    let offFly: (() => void) | undefined
     let safety: ReturnType<typeof setTimeout> | undefined
 
-    const ctx = gsap.context(() => {
-      const headline = headlineRef.current
-      const els = gsap.utils.toArray<HTMLElement>('[data-hero-el]', sectionRef.current)
+    const headline = headlineRef.current
+    const els = gsap.utils.toArray<HTMLElement>('[data-hero-el]')
 
-      if (resolveIntroMode() === 'flip') {
-        // O loader voa o nome dele até aqui e pousa em cima deste título, que
-        // fica invisível até o pouso — trocamos os dois no mesmo frame.
-        if (headline) gsap.set(headline, { opacity: 0 })
+    if (resolveIntroMode() === 'flip') {
+      const photoWrap = photoWrapRef.current
 
-        // Cada elemento parte de FORA da tela: o topo dele encostado na borda
-        // inferior da viewport. Como cada um está numa altura diferente, cada
-        // um percorre uma distância diferente — é isso que dá naturalidade.
-        // Medimos todos antes de deslocar (transform não afeta layout, mas
-        // manter a medição separada evita depender disso).
-        const offsets = els.map((el) => window.innerHeight - el.getBoundingClientRect().top)
-        els.forEach((el, i) => gsap.set(el, { y: offsets[i] }))
+      // Durante o voo do nome NADA mais se mexe — a tela fica limpa para o
+      // pouso. O título fica invisível até o loader pousar as letras nele.
+      if (headline) gsap.set(headline, { opacity: 0.01 })
 
-        const settle = () => {
-          if (headline) gsap.set(headline, { opacity: 1 })
-          gsap.set(els, { y: 0 })
-        }
+      // Estado inicial escondido: a foto encostada no rodapé (fora da tela) e os
+      // laterais um pouco abaixo do lugar e transparentes. Tudo isso só entra
+      // DEPOIS do pouso — e entra JUNTO, como um movimento único de revelação.
+      if (photoWrap) gsap.set(photoWrap, { yPercent: 100 })
+      gsap.set(els, { opacity: 0, y: 36 })
 
-        // Os elementos sobem DURANTE o voo do nome. A duração de cada um
-        // encolhe conforme seu atraso, então TODOS pousam no mesmo instante em
-        // que as letras chegam — é isso que faz as duas telas parecerem um
-        // movimento só.
-        offFly = onIntroFly(() => {
-          els.forEach((el, i) => {
-            const delay = i * RISE_STAGGER
-            gsap.to(el, {
-              y: 0,
-              duration: FLY_DURATION - delay,
-              delay,
-              ease: 'power2.out',
-            })
-          })
-        })
-
-        offIntro = onIntroDone(() => {
-          if (headline) gsap.set(headline, { opacity: 1 })
-        })
-        // Rede de segurança: nunca deixar o Hero invisível
-        safety = setTimeout(settle, 6000)
-      } else if (headline) {
-        // Fallback: o script do intro não rodou, então não há voo para esperar
-        // e o título faz a própria entrada.
-        const split = new SplitText(headline, { type: 'lines', mask: 'lines' })
-        gsap.from(split.lines, {
-          yPercent: 115,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.12,
-          delay: 0.1,
-        })
+      const settle = () => {
+        if (headline) gsap.set(headline, { opacity: 1 })
+        gsap.set(els, { opacity: 1, y: 0 })
+        if (photoWrap) gsap.set(photoWrap, { yPercent: 0 })
       }
 
-      // #3 — Photo: subtle parallax drift as the hero scrolls away
-      if (photoRef.current && sectionRef.current) {
-        gsap.to(photoRef.current, {
-          yPercent: 9,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true,
-          },
-        })
+      offIntro = onIntroDone(() => {
+        // O título assume no MESMO frame em que as letras do loader somem
+        // (instantâneo, senão o nome piscaria). Só então a cena se monta: a
+        // foto sobe do rodapé cobrindo a base do letreiro enquanto os laterais
+        // surgem suaves ao lado dela — tudo junto, um movimento único.
+        if (headline) gsap.set(headline, { opacity: 1 })
+        const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })
+        if (photoWrap) tl.to(photoWrap, { yPercent: 0, duration: 1.15 }, 0)
+        tl.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: RISE_STAGGER }, 0.1)
+      })
+      // Rede de segurança: nunca deixar o Hero invisível.
+      safety = setTimeout(settle, 6000)
+    } else if (headline) {
+      // Fallback (reduced-motion sem loader): o título faz a própria entrada.
+      // Divide por palavra e cada uma nasce cortada na base, subindo com peso.
+      const split = new SplitText(headline, { type: 'words', wordsClass: 'overflow-hidden' })
+      gsap.from(split.words, {
+        yPercent: 120,
+        duration: 1.4,
+        ease: 'expo.out',
+        stagger: 0.12,
+        delay: 0.1,
+      })
+    }
+
+    // Foto: parallax sutil enquanto o Hero sai de cena.
+    if (photoRef.current && sectionRef.current) {
+      gsap.to(photoRef.current, {
+        yPercent: 12,
+        scale: 1.04,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.2,
+          invalidateOnRefresh: true,
+        },
+      })
+    }
+
+    // O brilho de fundo respira devagar — presença viva, sem chamar atenção.
+    if (glowRef.current) {
+      gsap.to(glowRef.current, {
+        scale: 1.08,
+        opacity: 0.75,
+        duration: 6,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      })
+    }
+
+    // Parallax do mouse: o arco INTEIRO (máscara + foto) desliza junto do cursor.
+    // Roda numa camada só sua (tiltRef), separada do scroll (photoRef) e da
+    // subida do intro (data-hero-el), pra ninguém disputar o mesmo transform.
+    // Só em quem tem mouse de verdade e não pediu menos movimento.
+    let offMouse: (() => void) | undefined
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (tiltRef.current && fine && !reduce) {
+      const xTo = gsap.quickTo(tiltRef.current, 'x', { duration: 0.7, ease: 'power3.out' })
+      const yTo = gsap.quickTo(tiltRef.current, 'y', { duration: 0.7, ease: 'power3.out' })
+      const rTo = gsap.quickTo(tiltRef.current, 'rotation', { duration: 0.7, ease: 'power3.out' })
+      const onMove = (e: PointerEvent) => {
+        const nx = (e.clientX / window.innerWidth - 0.5) * 2  // -1 (esq) .. 1 (dir)
+        const ny = (e.clientY / window.innerHeight - 0.5) * 2 // -1 (topo) .. 1 (base)
+        xTo(nx * 16)
+        yTo(ny * 12)
+        rTo(nx * 1.4)
       }
-    }, sectionRef)
+      window.addEventListener('pointermove', onMove)
+      offMouse = () => window.removeEventListener('pointermove', onMove)
+    }
 
     return () => {
       offIntro?.()
-      offFly?.()
+      offMouse?.()
       if (safety) clearTimeout(safety)
-      ctx.revert()
     }
-  }, [])
+  }, { scope: sectionRef, dependencies: [] })
 
   return (
     <section
       ref={sectionRef}
       id="inicio"
-      className="min-h-screen flex items-center py-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 lg:gap-20 items-center">
+      {/* Palco: proporção do layout centralizado. Tudo é posicionado em camadas
+          sobre ele, do fundo (brilho + nome) para a frente (foto + textos).
+          `overflow-hidden` corta o próprio palco: em telas mais altas que 900px
+          o palco fica centralizado e sobra espaço embaixo — sem cortar aqui, a
+          foto (empurrada com yPercent:100) apareceria nesse vão antes de subir.
+          Cortando no palco, ela some de vez e só entra ao subir de baixo. */}
+      <div className="relative w-full max-w-[1440px] mx-auto h-[min(900px,100svh)] overflow-hidden">
 
-          {/* ── Esquerda: texto ── */}
-          <div>
-            <div data-hero-el>
-              <p className="text-[14px] font-medium tracking-[0.1em] uppercase text-t4 mb-5 flex items-center gap-3">
-                <span className="block w-6 h-px bg-t4" />
-                Desenvolvedor Full Stack
-              </p>
-            </div>
+        {/* ── Brilho radial dourado, atrás do nome ── */}
+        <div
+          ref={glowRef}
+          aria-hidden
+          className="absolute left-1/2 -translate-x-1/2 top-[10%] w-[580px] max-w-[80vw] aspect-[580/660] pointer-events-none"
+          style={{
+            background: 'radial-gradient(closest-side, rgba(201,168,76,0.15), rgba(201,168,76,0) 70%)',
+          }}
+        />
 
-            <h1
-              ref={headlineRef}
-              className="font-serif text-[clamp(68px,9vw,120px)] leading-[0.93] tracking-[0.01em] text-t1 mb-8"
-            >
-              <span className="block" data-hero-word="Wesley">Wesley</span>
-              <span className="block" data-hero-word="Franco">Franco</span>
-            </h1>
+        {/* ── Nome gigante, atrás da foto ── */}
+        <h1
+          ref={headlineRef}
+          className="absolute inset-x-0 top-[5%] md:top-[6%] z-0 px-4 text-center uppercase font-sans font-extrabold text-t1 select-none whitespace-normal md:whitespace-nowrap
+                     text-[clamp(52px,11vw,152px)] leading-[0.92] tracking-[-0.04em]"
+        >
+          <span data-hero-word="Wesley">Wesley</span>{' '}
+          <span data-hero-word="Franco">Franco</span>
+        </h1>
 
-            <div data-hero-el>
-              <div className="w-9 h-px bg-accent mb-6" />
-              <p className="text-[17px] text-t3 leading-[1.75] max-w-[400px] mb-9">
-                Você fala direto comigo, do primeiro wireframe ao deploy.
-                Sem intermediários, sem enrolação — só entrega.
-              </p>
-            </div>
-
-            <div data-hero-el>
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href="#projetos"
-                  onClick={(e) => { e.preventDefault(); document.querySelector('#projetos')?.scrollIntoView({ behavior: 'smooth' }) }}
-                  className="inline-flex items-center gap-2 bg-t1 text-bg text-[17px] font-medium px-5 py-2.5 rounded-md hover:bg-t2 transition-all duration-200 hover:-translate-y-px"
-                >
-                  Ver Projetos
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </a>
-                <a
-                  href="#contato"
-                  onClick={(e) => { e.preventDefault(); document.querySelector('#contato')?.scrollIntoView({ behavior: 'smooth' }) }}
-                  className="inline-flex items-center gap-2 text-t2 text-[17px] font-medium px-5 py-2.5 rounded-md transition-all duration-200 hover:text-t1"
-                  style={{ border: '1px solid var(--bdr-h)' }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.28)')}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--bdr-h)')}
-                >
-                  Falar comigo
-                </a>
-              </div>
-            </div>
+        {/* ── Foto recortada em arco, no centro ── */}
+        <div
+          ref={photoWrapRef}
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-[clamp(260px,32vw,420px)] will-change-transform"
+        >
+          <div ref={tiltRef} className="will-change-transform">
+          <div
+            ref={photoRef}
+            className="relative aspect-[420/788] rounded-t-full overflow-hidden origin-bottom"
+            style={{ boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.07)' }}
+          >
+            <Image
+              src="/hero-retrato.jpg"
+              alt="Wesley Franco"
+              fill
+              preload
+              quality={90}
+              sizes="(max-width: 768px) 75vw, 460px"
+              className="object-cover object-top"
+            />
+            {/* Escurece a base e dá um leve tom dourado à figura. */}
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-accent/10"
+              style={{ mixBlendMode: 'color' }}
+            />
+            {/* Funde as bordas da figura no fundo: topo e laterais somem, e a
+                base dissolve para dentro da página — sem recorte "colado". */}
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(180deg, #0B0B0B 0%, rgba(11,11,11,0) 14%, rgba(11,11,11,0) 56%, rgba(11,11,11,0.85) 84%, #0B0B0B 100%),' +
+                  'linear-gradient(90deg, rgba(11,11,11,0.9) 0%, rgba(11,11,11,0) 22%, rgba(11,11,11,0) 78%, rgba(11,11,11,0.9) 100%)',
+              }}
+            />
           </div>
-
-          {/* ── Direita: foto ── */}
-          <div data-hero-el className="flex justify-center lg:justify-end">
-            <div ref={photoRef} className="relative">
-              <div
-                className="relative w-full max-w-[340px] lg:max-w-none lg:w-[380px] aspect-[4/5] bg-surface rounded-lg overflow-hidden"
-                style={{ border: '1px solid var(--bdr-h)', borderLeft: '2px solid #C9A84C' }}
-              >
-                {/* A foto é 3:2 e a moldura 4:5, então `cover` corta as laterais.
-                    `sizes` considera esse corte: a fonte precisa ser ~1.9x a
-                    largura da caixa para preencher — pedir só a largura da caixa
-                    entregaria uma imagem ampliada e borrada. */}
-                <Image
-                  src="/photo.jpg"
-                  alt="Wesley Franco"
-                  fill
-                  preload
-                  sizes="(max-width: 1024px) 640px, 720px"
-                  className="object-cover object-center"
-                />
-              </div>
-
-              {/* Detalhe decorativo deslocado */}
-              <div
-                className="absolute -bottom-3 -right-3 w-16 h-16 rounded-sm -z-10"
-                style={{ border: '1px solid var(--bdr-h)' }}
-              />
-            </div>
           </div>
-
         </div>
+
+        {/* ── Fade inferior: costura a foto e o palco no fundo da página ── */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-40 z-[15] pointer-events-none"
+          style={{
+            background: 'linear-gradient(180deg, rgba(11,11,11,0) 0%, rgba(11,11,11,0.9) 60%, #0B0B0B 100%)',
+          }}
+        />
+
+        {/* ── Bloco esquerda: régua dourada + assinatura ── */}
+        <div
+          data-hero-el
+          className="absolute left-[6%] top-[38%] z-20 max-w-[300px] hidden md:block will-change-transform"
+        >
+          <div className="w-9 h-px bg-accent mb-[18px]" />
+          <p className="uppercase text-[13px] font-medium text-t3 tracking-[0.09em] leading-[2]">
+            Desenvolvedor full stack que cria produtos digitais rápidos, bem
+            acabados e memoráveis <span className="text-accent">✦</span>
+          </p>
+        </div>
+
+        {/* ── CTA direita: pílula com borda em degradê dourado ──
+            O wrapper é o alvo do GSAP na entrada (só transform/opacity, SEM
+            transição CSS). O hover mora no <a> interno, com a própria
+            transição — separados, os dois transforms nunca se atropelam. Era
+            isso que fazia o botão "travar e andar depois" na revelação. */}
+        <div
+          data-hero-el
+          className="absolute right-[6%] top-[36%] z-20 hidden md:block will-change-transform"
+        >
+          <a
+            href="#contato"
+            onClick={(e) => { e.preventDefault(); document.querySelector('#contato')?.scrollIntoView({ behavior: 'smooth' }) }}
+            className="group block rounded-full p-px transition-transform duration-200 ease-out hover:-translate-y-0.5"
+            style={{
+              background: 'linear-gradient(180deg, #C9A84C 0%, #DDB95E 50%, rgba(201,168,76,0.2) 100%)',
+            }}
+          >
+            <span className="block rounded-full bg-bg px-7 py-3.5 text-[13px] font-semibold uppercase tracking-[0.11em] text-t1 transition-colors duration-200 group-hover:bg-surface">
+              Falar comigo
+            </span>
+          </a>
+        </div>
+
+        {/* ── Descrição + CTA no mobile: empilhados abaixo do nome ── */}
+        <div
+          data-hero-el
+          className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-6 px-6 text-center md:hidden"
+        >
+          <p className="uppercase text-[12px] font-medium text-t3 tracking-[0.09em] leading-[1.9] max-w-[280px]">
+            Desenvolvedor full stack que cria produtos digitais rápidos, bem
+            acabados e memoráveis <span className="text-accent">✦</span>
+          </p>
+          <a
+            href="#contato"
+            onClick={(e) => { e.preventDefault(); document.querySelector('#contato')?.scrollIntoView({ behavior: 'smooth' }) }}
+            className="rounded-full p-px"
+            style={{ background: 'linear-gradient(180deg, #C9A84C 0%, #DDB95E 50%, rgba(201,168,76,0.2) 100%)' }}
+          >
+            <span className="block rounded-full bg-bg px-7 py-3.5 text-[13px] font-semibold uppercase tracking-[0.11em] text-t1">
+              Falar comigo
+            </span>
+          </a>
+        </div>
+
       </div>
     </section>
   )

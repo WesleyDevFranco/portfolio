@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans, IM_Fell_Double_Pica } from 'next/font/google'
 import './globals.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
-  weight: ['400', '500', '600'],
+  weight: ['400', '500', '600', '700', '800'],
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
