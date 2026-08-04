@@ -33,12 +33,11 @@ export function Contact() {
     <section id="contato" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12 text-center">
         <Reveal>
-          <span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-4">Contato</span>
           <h2 className="font-serif text-[clamp(38px,5.5vw,72px)] text-t1 leading-[1.05] tracking-[0.01em] mb-5">
-            Tem um projeto<br />em mente?
+            Precisa de um Desenvolvedor<br />com essas características?
           </h2>
           <p className="text-[16.5px] text-t3 leading-[1.72] max-w-[380px] mx-auto mb-12">
-            Me conta o que você precisa. Respondo por e-mail — direto, sem formulário.
+            Você pode me encontrar em qualquer uma das plataformas abaixo!
           </p>
 
           <div className="flex flex-wrap gap-2.5 justify-center">
