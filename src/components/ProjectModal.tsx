@@ -1,5 +1,7 @@
 'use client'
 import { useEffect, useState, ReactNode } from 'react'
+import { createPortal } from 'react-dom'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
 
 export interface Project {
   name: string
@@ -26,7 +28,13 @@ export function ProjectModal({ project, onClose }: Props) {
     if (!project) { setVisible(false); return }
     const id = requestAnimationFrame(() => setVisible(true))
     document.body.style.overflow = 'hidden'
-    return () => { cancelAnimationFrame(id); document.body.style.overflow = '' }
+  const smoother = ScrollSmoother.get()
+    smoother?.paused(true)
+    return () => {
+      cancelAnimationFrame(id)
+      document.body.style.overflow = ''
+      smoother?.paused(false)
+    }
   }, [project])
 
   useEffect(() => {
@@ -37,7 +45,7 @@ export function ProjectModal({ project, onClose }: Props) {
 
   if (!project) return null
 
-  return (
+return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-6"
       style={{
@@ -158,6 +166,7 @@ export function ProjectModal({ project, onClose }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

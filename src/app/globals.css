@@ -17,22 +17,15 @@
   --font-serif: var(--font-fell), Georgia, serif;
 }
 
-/* Variáveis rgba que o Tailwind não suporta diretamente */
 :root {
   --bdr:   rgba(255, 255, 255, 0.07);
   --bdr-h: rgba(255, 255, 255, 0.13);
 }
 
 html {
-  scroll-behavior: smooth;
-  /* Reserva a barra de rolagem sempre. Sem isso, quando o loader devolve o
-     scroll no fim do intro, a barra aparece e desloca o conteúdo centralizado
-     ~1.5px — um micro-salto bem no frame do pouso do nome. */
-  scrollbar-gutter: stable;
+ scrollbar-gutter: stable;
 }
 
-/* Modo decidido pelo script inline no <head>, antes do primeiro paint.
-   Sem isso o loader piscaria em toda revisita. */
 html[data-intro='none'] .wf-loader {
   display: none !important;
 }
