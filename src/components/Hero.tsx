@@ -135,12 +135,12 @@ const exitScroll = () => ({
         {/* ── Foto recortada em arco, no centro ── */}
         <div
           ref={photoWrapRef}
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-[clamp(260px,32vw,420px)] will-change-transform"
+          className="absolute bottom-[clamp(-104px,-7vw,-56px)] left-1/2 -translate-x-1/2 z-10 w-[clamp(260px,32vw,420px)] will-change-transform"
         >
           <div ref={tiltRef} className="will-change-transform">
           <div
             ref={photoRef}
-            className="relative aspect-[420/788] rounded-t-full overflow-hidden origin-bottom"
+            className="relative aspect-[420/788] rounded-t-[clamp(36px,4.5vw,59px)] overflow-hidden origin-bottom"
             style={{ boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.07)' }}
           >
             <Image
@@ -199,16 +199,22 @@ const exitScroll = () => ({
             O wrapper é o alvo do GSAP na entrada (só transform/opacity, SEM
             transição CSS). O hover mora no <a> interno, com a própria
             transição — separados, os dois transforms nunca se atropelam. Era
-            isso que fazia o botão "travar e andar depois" na revelação. */}
+            isso que fazia o botão "travar e andar depois" na revelação.
+
+            Alinhamento: os dois satélites partem do mesmo `top-[38%]`. Como a
+            pílula tem ~49,5px de altura e a linha do parágrafo 26px, alinhar as
+            CAIXAS deixaria o rótulo ~12px abaixo da 1ª linha do texto. O
+            `mt-[-12px]` sobe o centro da pílula até essa linha — é margem, e
+            não transform, porque o transform do <a> pertence ao hover. */}
         <div
           data-hero-el
-          className="absolute right-[6%] top-[36%] z-20 hidden md:block will-change-transform"
+          className="absolute right-[6%] top-[38%] z-20 hidden md:block will-change-transform"
         >
           <div data-hero-drift className="will-change-transform">
             <a
               href="#contato"
               onClick={goToContato}
-              className="group block rounded-full p-px transition-transform duration-200 ease-out hover:-translate-y-0.5"
+              className="group block mt-[-12px] rounded-full p-px transition-transform duration-200 ease-out hover:-translate-y-0.5"
               style={{
                 background: 'linear-gradient(180deg, #C9A84C 0%, #DDB95E 50%, rgba(201,168,76,0.2) 100%)',
               }}
