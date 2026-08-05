@@ -189,8 +189,7 @@ const exitScroll = () => ({
         >
           <div data-hero-drift className="will-change-transform">
             <p className="uppercase text-[13px] font-medium text-t3 tracking-[0.09em] leading-[2]">
-              Desenvolvedor full stack que cria produtos digitais rápidos, bem
-              acabados e memoráveis <span className="text-accent">✦</span>
+              Desenvolvedor que cria sites rápidos, sistemas escaláveis e automatiza fluxos repetitivos na sua empresa. <span className="text-accent">✦</span>
             </p>
           </div>
         </div>
@@ -239,8 +238,7 @@ const exitScroll = () => ({
             className="flex flex-col items-center gap-6 text-center will-change-transform"
           >
             <p className="uppercase text-[12px] font-medium text-t3 tracking-[0.09em] leading-[1.9] max-w-[280px]">
-              Desenvolvedor full stack que cria produtos digitais rápidos, bem
-              acabados e memoráveis <span className="text-accent">✦</span>
+              Desenvolvedor que cria sites rápidos, sistemas escaláveis e automatiza fluxos repetitivos na sua empresa. <span className="text-accent">✦</span>
             </p>
             <a
               href="#contato"
