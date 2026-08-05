@@ -1,4 +1,5 @@
 import { Reveal } from './Reveal'
+import { TextReveal } from './TextReveal'
 
 const steps = [
   {
@@ -50,12 +51,18 @@ const steps = [
 
 export function Process() {
   return (
-    <section id="processo" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
+    <section id="processo" style={{ padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
 
-        <Reveal><span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Metodologia</span></Reveal>
-        <Reveal delay={70}><h2 className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-3">Como desenvolvo software</h2></Reveal>
-        <Reveal delay={140}><p className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px] mb-14">Cada projeto segue um processo claro — sem surpresas no meio do caminho e sem retrabalho no final.</p></Reveal>
+        <TextReveal as="span" className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">
+          Metodologia
+        </TextReveal>
+        <TextReveal as="h2" delay={70} className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-3">
+          Como desenvolvo software
+        </TextReveal>
+        <TextReveal delay={140} className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px] mb-14">
+          Cada projeto segue um processo claro — sem surpresas no meio do caminho e sem retrabalho no final.
+        </TextReveal>
 
         <Reveal delay={70}>
           <div

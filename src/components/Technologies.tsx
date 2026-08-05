@@ -1,4 +1,4 @@
-import { Reveal } from './Reveal'
+import { TextReveal } from './TextReveal'
 import { Stagger } from './Stagger'
 
 const categories = [
@@ -22,12 +22,16 @@ const categories = [
 
 export function Technologies() {
   return (
-    <section id="tecnologias" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
+    <section id="tecnologias" style={{ padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
 
-        <Reveal><span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Stack</span></Reveal>
-        <Reveal delay={70}><h2 className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-3">Tecnologias</h2></Reveal>
-        <Reveal delay={140}><p className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px] mb-14">Ferramentas que utilizo para construir aplicações modernas, escaláveis e de alta performance.</p></Reveal>
+
+        <TextReveal as="h2" delay={70} className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-3">
+          Tecnologias
+        </TextReveal>
+        <TextReveal delay={140} className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px] mb-14">
+          Ferramentas que utilizo para construir aplicações modernas, escaláveis e de alta performance.
+        </TextReveal>
 
         <Stagger
           className="grid grid-cols-2 lg:grid-cols-4 rounded-[10px] overflow-hidden"

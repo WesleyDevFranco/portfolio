@@ -1,5 +1,6 @@
 'use client'
 import { Reveal } from './Reveal'
+import { TextReveal } from './TextReveal'
 
 const links = [
   {
@@ -30,16 +31,19 @@ const links = [
 
 export function Contact() {
   return (
-    <section id="contato" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
+    <section id="contato" style={{ padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12 text-center">
-        <Reveal>
-          <h2 className="font-serif text-[clamp(38px,5.5vw,72px)] text-t1 leading-[1.05] tracking-[0.01em] mb-5">
-            Precisa de um Desenvolvedor<br />com essas características?
-          </h2>
-          <p className="text-[16.5px] text-t3 leading-[1.72] max-w-[380px] mx-auto mb-12">
-            Você pode me encontrar em qualquer uma das plataformas abaixo!
-          </p>
+        <TextReveal
+          as="h2"
+          className="font-serif text-[clamp(38px,5.5vw,72px)] text-t1 leading-[1.05] tracking-[0.01em] mb-5"
+        >
+          Precisa de um Desenvolvedor<br />com essas características?
+        </TextReveal>
+        <TextReveal delay={140} className="text-[16.5px] text-t3 leading-[1.72] max-w-[380px] mx-auto mb-12">
+          Você pode me encontrar em qualquer uma das plataformas abaixo!
+        </TextReveal>
 
+        <Reveal delay={240}>
           <div className="flex flex-wrap gap-2.5 justify-center">
             {links.map((l) => (
               <a

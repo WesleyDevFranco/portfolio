@@ -1,4 +1,5 @@
 import { Reveal } from './Reveal'
+import { TextReveal } from './TextReveal'
 
 const events = [
   { year: '2023', title: 'Primeiros projetos', desc: 'Início da jornada no desenvolvimento web, construção dos fundamentos com HTML, CSS, JavaScript e os primeiros projetos com React e Node.js.', current: false },
@@ -9,11 +10,15 @@ const events = [
 
 export function Timeline() {
   return (
-    <section id="trajetoria" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
+    <section id="trajetoria" style={{ padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
 
-        <Reveal><span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Trajetória</span></Reveal>
-        <Reveal delay={70}><h2 className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-14">Linha do Tempo</h2></Reveal>
+        <TextReveal as="span" className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">
+          Trajetória
+        </TextReveal>
+        <TextReveal as="h2" delay={70} className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-14">
+          Linha do Tempo
+        </TextReveal>
 
         <Reveal delay={70}>
           <div className="relative pl-7 md:pl-8">

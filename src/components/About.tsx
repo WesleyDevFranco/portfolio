@@ -1,19 +1,21 @@
 import { Reveal } from './Reveal'
+import { TextReveal } from './TextReveal'
 
 export function About() {
   return (
-    <section id="sobre" style={{ borderTop: '1px solid var(--bdr)', padding: 'clamp(64px,10vw,128px) 0' }}>
+    <section id="sobre" style={{ padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-10 lg:gap-24 items-start">
 
           {/* Esquerda sticky */}
           <div className="lg:sticky lg:top-20">
-            <Reveal><span className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">Sobre</span></Reveal>
-            <Reveal delay={70}>
-              <h2 className="font-serif text-[clamp(36px,4.5vw,52px)] text-t1 leading-[1.05] tracking-[0.01em] mb-6">
-                Quem<br />sou eu
-              </h2>
-            </Reveal>
+            <TextReveal
+              as="h2"
+              delay={70}
+              className="font-serif text-[clamp(36px,4.5vw,52px)] text-t1 leading-[1.05] tracking-[0.01em] mb-6"
+            >
+              Quem<br />sou eu
+            </TextReveal>
             <Reveal delay={140}>
               <div className="w-7 h-px bg-accent" />
             </Reveal>
@@ -27,9 +29,9 @@ export function About() {
               'Quando você trabalha comigo, fala diretamente comigo. Sem passa-ficha, sem mal-entendido entre o que você pediu e o que foi construído.',
               'Tem algo para construir ou melhorar? Me manda um e-mail — respondo rápido.',
             ].map((text, i) => (
-              <Reveal key={i} delay={i * 70}>
-                <p className="text-[16.5px] text-t2 leading-[1.85]">{text}</p>
-              </Reveal>
+              <TextReveal key={i} delay={i * 70} className="text-[16.5px] text-t2 leading-[1.85]">
+                {text}
+              </TextReveal>
             ))}
           </div>
 

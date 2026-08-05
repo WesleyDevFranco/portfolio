@@ -38,6 +38,18 @@ body {
   overflow-x: hidden;
 }
 
+/* Máscara do TextReveal (SplitText). O recorte da máscara é a caixa da linha,
+   que corta descendentes (g, y, ç) em títulos com leading apertado. O padding
+   devolve o espaço e a margem negativa o tira do fluxo — o layout não muda. */
+.tr-unit-mask {
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+/* Carrossel de projetos: scroll horizontal próprio, sem barra visível. */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: #0B0B0B; }
 ::-webkit-scrollbar-thumb { background: #1c1c1c; border-radius: 2px; }
