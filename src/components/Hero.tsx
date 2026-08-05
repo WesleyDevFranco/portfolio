@@ -189,7 +189,7 @@ const exitScroll = () => ({
         >
           <div data-hero-drift className="will-change-transform">
             <p className="uppercase text-[13px] font-medium text-t3 tracking-[0.09em] leading-[2]">
-              Desenvolvedor que cria sites rápidos, sistemas escaláveis e automatiza fluxos repetitivos na sua empresa. <span className="text-accent">✦</span>
+              Desenvolvedor que cria sites rápidos, sistemas escaláveis e automatiza fluxos repetitivos na sua empresa  <span className="text-accent">✦</span>
             </p>
           </div>
         </div>

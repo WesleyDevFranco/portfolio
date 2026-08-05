@@ -54,14 +54,12 @@ export function Process() {
     <section id="processo" style={{ padding: 'clamp(64px,10vw,128px) 0' }}>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
 
-        <TextReveal as="span" className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">
-          Metodologia
-        </TextReveal>
+
         <TextReveal as="h2" delay={70} className="font-serif text-[clamp(34px,4.5vw,58px)] text-t1 mb-3">
-          Como desenvolvo software
+          Como eu posso te ajudar
         </TextReveal>
         <TextReveal delay={140} className="text-[16.5px] text-t3 leading-[1.72] max-w-[480px] mb-14">
-          Cada projeto segue um processo claro — sem surpresas no meio do caminho e sem retrabalho no final.
+          Cada solução é feita pensada para o seu produto, e você recebe atualizações reais do progresso.
         </TextReveal>
 
         <Reveal delay={70}>
