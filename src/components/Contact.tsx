@@ -1,6 +1,7 @@
 'use client'
-import { Reveal } from './Reveal'
+import { useRef } from 'react'
 import { TextReveal } from './TextReveal'
+import { useStackedPanel } from './useStackedPanel'
 
 const links = [
   {
@@ -21,30 +22,37 @@ const links = [
     accent: false,
     icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>,
   },
-  {
-    label: 'WhatsApp',
-    href: 'https://wa.me/5541996017865',
-    accent: false,
-    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.63a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .91h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
-  },
 ]
 
 export function Contact() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useStackedPanel(sectionRef, { last: true })
+
   return (
-    <section id="contato" style={{ padding: 'clamp(64px,10vw,128px) 0' }}>
+    <section
+      ref={sectionRef}
+      id="contato"
+      className="relative z-20 bg-bg min-h-svh flex items-center py-[clamp(48px,8vh,128px)] panel-dwell"
+    >
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12 text-center">
         <TextReveal
           as="h2"
+          from="right"
           className="font-serif text-[clamp(38px,5.5vw,72px)] text-t1 leading-[1.05] tracking-[0.01em] mb-5"
         >
           Precisa de um Desenvolvedor<br />com essas características?
         </TextReveal>
-        <TextReveal delay={140} className="text-[16.5px] text-t3 leading-[1.72] max-w-[380px] mx-auto mb-12">
+        <TextReveal
+          delay={140}
+          from="right"
+          className="text-[16.5px] text-t3 leading-[1.72] max-w-[380px] mx-auto mb-12"
+        >
           Você pode me encontrar em qualquer uma das plataformas abaixo!
         </TextReveal>
 
-        <Reveal delay={240}>
-          <div className="flex flex-wrap gap-2.5 justify-center">
+        {/* Botões fixos: sem revelação, para o movimento ficar só no texto. */}
+        <div className="flex flex-wrap gap-2.5 justify-center">
             {links.map((l) => (
               <a
                 key={l.label}
@@ -81,9 +89,8 @@ export function Contact() {
                 {l.icon}
                 {l.label}
               </a>
-            ))}
-          </div>
-        </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )

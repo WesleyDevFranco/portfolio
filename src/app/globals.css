@@ -38,6 +38,18 @@ body {
   overflow-x: hidden;
 }
 
+/* Pausa entre painéis empilhados.
+   Esta margem é o que segura o painel seguinte fora da tela, para o anterior
+   aparecer inteiro antes de ser coberto. É margem (e não padding) de propósito:
+   margem é transparente, então o painel preso continua visível através dela.
+   A media query é a MESMA do matchMedia em useStackedPanel.ts — sem painel,
+   sem pausa, senão viraria um buraco vazio no meio da página. */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .panel-dwell {
+    margin-top: 50vh;
+  }
+}
+
 /* Máscara do TextReveal (SplitText). O recorte da máscara é a caixa da linha,
    que corta descendentes (g, y, ç) em títulos com leading apertado. O padding
    devolve o espaço e a margem negativa o tira do fluxo — o layout não muda. */

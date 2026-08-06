@@ -1,5 +1,8 @@
+'use client'
+import { useRef } from 'react'
 import { Reveal } from './Reveal'
 import { TextReveal } from './TextReveal'
+import { useStackedPanel } from './useStackedPanel'
 
 const events = [
   { year: '2023', title: 'Primeiros projetos', desc: 'Início da jornada no desenvolvimento web, construção dos fundamentos com HTML, CSS, JavaScript e os primeiros projetos com React e Node.js.', current: false },
@@ -9,8 +12,30 @@ const events = [
 ]
 
 export function Timeline() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Painel 2: cobre o Process e depois fica preso enquanto o Contato o cobre.
+  // A margem do topo é a PAUSA — segura este painel fora da tela por meia
+  // altura de viewport, para o Process aparecer inteiro antes de ser coberto.
+  // Só existe quando os painéis existem (desktop + movimento permitido), senão
+  // viraria um buraco vazio no meio da página.
+  useStackedPanel(sectionRef)
+
   return (
-    <section id="trajetoria" style={{ padding: 'clamp(64px,10vw,128px) 0' }}>
+    <section
+      ref={sectionRef}
+      id="trajetoria"
+      className="relative z-10 min-h-svh flex items-center py-[clamp(48px,8vh,128px)] panel-dwell"
+      style={{
+        background: '#FFFFFF',
+      }}
+    >
+      {}
+      <style>{`
+        #trajetoria, #trajetoria * { color: #0B0B0B !important; }
+        #trajetoria .w-px { background: rgba(11,11,11,0.18) !important; }
+        #trajetoria .rounded-full { background: #0B0B0B !important; box-shadow: none !important; }
+      `}</style>
       <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12">
 
         <TextReveal as="span" className="text-[17px] font-medium tracking-[0.13em] uppercase text-t4 block mb-3">

@@ -17,15 +17,19 @@ interface Props {
   delay?: number
   /** `lines` para blocos de texto; `words` para títulos curtos. */
   split?: 'lines' | 'words'
+  /** De onde a linha entra: `up` sobe de baixo, `right` desliza da direita. */
+  from?: 'up' | 'right'
   stagger?: number
   duration?: number
 }
 
 /**
- * Revela texto subindo por trás de uma máscara, linha a linha.
+ * Revela texto por trás de uma máscara, linha a linha.
  *
  * O `mask` do SplitText embrulha cada unidade num elemento com overflow
- * recortado, então a linha sobe de dentro dela — nada de fade genérico.
+ * recortado, então a linha entra de dentro dela — nada de fade genérico. O
+ * recorte vale nos dois eixos, então a mesma máscara serve para `up` e
+ * `right`; só muda qual propriedade é animada.
  *
  * Diferente do `Reveal`, aqui o texto NÃO começa com opacity 0 no HTML: se o
  * JS falhar, o conteúdo continua legível.
@@ -36,6 +40,7 @@ export function TextReveal({
   className,
   delay = 0,
   split = 'lines',
+  from = 'up',
   stagger = 0.09,
   duration = 0.9,
 }: Props) {
@@ -68,7 +73,9 @@ export function TextReveal({
           onSplit: (self) => {
             el.setAttribute('aria-label', label)
             return gsap.from(self[split], {
-              yPercent: 100,
+              // 100% da própria largura/altura: a unidade parte inteiramente
+              // fora da máscara e desliza para o lugar.
+              ...(from === 'right' ? { xPercent: 100 } : { yPercent: 100 }),
               duration,
               ease: 'expo.out',
               stagger,
